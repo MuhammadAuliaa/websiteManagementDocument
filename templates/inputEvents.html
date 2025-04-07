@@ -207,61 +207,67 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Authors table</h6>
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table table-sm align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Kode Project</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Judul Project</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Tanggal Event</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Hari Kerja</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Nama Venue</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Jenis Pekerjaan</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Keterangan</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Approval Status</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">User by</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-start">Action</th>
-                      <th class="text-secondary opacity-7"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for row in project_data %}
-                    <tr>
-                      <td class="text-center text-sm">{{ row.kode_project }}</td>
-                      <td class="text-start text-sm">{{ row.judul_project }}</td>
-                      <td class="text-center text-sm">{{ row.tanggal_event }}</td>
-                      <td class="text-center text-sm">{{ row.hari_kerja }}</td>
-                      <td class="text-start text-sm">{{ row.nama_venue }}</td>
-                      <td class="text-start text-sm">{{ row.jenis_pekerjaan }}</td>
-                      <td class="text-start text-sm text-truncate" style="max-width: 250px;" title="{{ row.keterangan }}">
-                        {{ row.keterangan }}
-                      </td>
-                      <td class="text-center text-sm">
-                        {% if row.approval_status == 'approved' %}
-                          <span class="badge bg-success">Approved</span>
-                        {% elif row.approval_status == 'review' %}
-                          <span class="badge bg-warning text-dark">Review</span>
-                        {% else %}
-                          <span class="badge bg-danger">Rejected</span>
-                        {% endif %}
-                      </td>
-                      <td></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>                
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <h6>Input Project</h6>
+              </div>
+              <div class="card-body pt-3 px-4">
+                <form action="{{ url_for('submit_project') }}" method="POST">
+                  <div class="mb-3">
+                    <label for="kode_project" class="form-label">Kode Project</label>
+                    <input type="text" name="kode_project" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="judul_project" class="form-label">Judul Project</label>
+                    <input type="text" name="judul_project" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="tanggal_event" class="form-label">Tanggal Event</label>
+                    <input type="date" name="tanggal_event" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="hari_kerja" class="form-label">Hari Kerja</label>
+                    <input type="text" name="hari_kerja" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="nama_venue" class="form-label">Nama Venue</label>
+                    <input type="text" name="nama_venue" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan</label>
+                    <input type="text" name="jenis_pekerjaan" class="form-control" required>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="keterangan" class="form-label">Keterangan</label>
+                    <textarea name="keterangan" class="form-control" rows="3" required></textarea>
+                  </div>
+      
+                  <div class="mb-4">
+                    <label for="approval_status" class="form-label">Approval Status</label>
+                    <select name="approval_status" class="form-select" required>
+                      <option value="approved">Approved</option>
+                      <option value="review">Review</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
+      
+                  <div class="d-flex justify-content-end">
+                    <!-- Submit biasa -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>      
       
       <footer class="footer pt-3  ">
         <div class="container-fluid">
@@ -359,6 +365,42 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+
+
+  <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function () {
+          Swal.fire({
+            title: 'Apakah kamu yakin?',
+            text: "Pastikan data sudah benar sebelum submit.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Iya, simpan!',
+            cancelButtonText: 'Tidak',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.querySelector('form').submit();
+            }
+          });
+        });
+      </script>
+      <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+      
+        if (success === 'true') {
+          Swal.fire({
+            title: 'Berhasil!',
+            text: 'Data project berhasil ditambahkan.',
+            icon: 'success',
+            confirmButtonColor: '#3085d6'
+          });
+        }
+      </script>
+  
 </body>
 
 </html>
