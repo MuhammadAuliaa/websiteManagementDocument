@@ -11,6 +11,7 @@ mydb = mysql.connector.connect(
     password="skhujpg9h2jx",
     database="document_v1"
 )
+cursor = mydb.cursor(dictionary=True)
 
 @app.route('/')
 def home():
@@ -60,6 +61,13 @@ def submit_project():
     except Exception as e:
         flash(f"Terjadi kesalahan: {str(e)}", "danger")
         return redirect(url_for('inputEvents'))
+    
+# Route halaman form input
+@app.route('/dataUsers', methods=['GET'])
+def dataUsers():
+    cursor.execute("SELECT * FROM users")
+    users_data = cursor.fetchall()
+    return render_template('dataUser.html', users=users_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
