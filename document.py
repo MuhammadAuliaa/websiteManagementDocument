@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
+from flask import render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -68,6 +69,74 @@ def dataUsers():
     cursor.execute("SELECT * FROM users")
     users_data = cursor.fetchall()
     return render_template('dataUser.html', users=users_data)
+
+# Route untuk delete user
+@app.route('/delete_user/<string:username>', methods=['GET'])
+def delete_user(username):
+    try:
+        cursor.execute("DELETE FROM users WHERE username = %s", (username,))
+        mydb.commit()
+        # flash('User berhasil dihapus.', 'success')
+    except Exception as e:
+        mydb.rollback()
+        flash(f'Terjadi kesalahan saat menghapus user: {e}', 'danger')
+    return redirect(url_for('dataUsers'))
+
+@app.route('/registerUsers', methods=['GET', 'POST'])
+def registerUsers():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        no_pekerja = request.form['no_pekerja']
+        nama_pekerja = request.form['nama_pekerja']
+        role = request.form['role']
+
+        # Cek apakah no_pekerja sudah ada
+        cursor.execute("SELECT * FROM users WHERE no_pekerja = %s", (no_pekerja,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash('Nomor Pekerja sudah terdaftar. Gunakan nomor lain.', 'danger')
+            return redirect(url_for('registerUsers'))
+
+        # Insert user baru
+        cursor.execute("""
+            INSERT INTO users (username, password, no_pekerja, nama_pekerja, role) 
+            VALUES (%s, %s, %s, %s, %s)
+        """, (username, password, no_pekerja, nama_pekerja, role))
+        mydb.commit()
+
+        flash('User berhasil ditambahkan!', 'success')
+        return redirect(url_for('registerUsers'))
+
+    return render_template('registerUsers.html')
+
+@app.route('/edit_user/<username>', methods=['GET', 'POST'])
+def edit_user(username):
+    if request.method == 'POST':
+        new_username = request.form['username']
+        password = request.form['password']
+        no_pekerja = request.form['no_pekerja']
+        nama_pekerja = request.form['nama_pekerja']
+        role = request.form['role']
+
+        # Update data di database
+        cursor.execute("""
+            UPDATE users 
+            SET username=%s, password=%s, no_pekerja=%s, nama_pekerja=%s, role=%s 
+            WHERE username=%s
+        """, (new_username, password, no_pekerja, nama_pekerja, role, username))
+        mydb.commit()
+
+        flash('User berhasil diperbarui!', 'success')
+        return redirect(url_for('dataUsers'))
+
+    # Ambil data user berdasarkan username
+    cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+    user = cursor.fetchone()
+
+    return render_template('editUser.html', user=user)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
