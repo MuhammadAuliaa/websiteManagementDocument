@@ -123,7 +123,7 @@
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" placeholder="Type here...">
+              <input type="text" id="searchInput" class="form-control" placeholder="Type here...">
             </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
@@ -240,10 +240,10 @@
                 <table class="table table-sm align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-center">Username</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7">No Pekerja</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7">Nama Pekerja</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7">Role</th>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bold opacity-7 text-center" onclick="sortTableByColumn(0)">Username</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7" onclick="sortTableByColumn(1)">No Pekerja</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7" onclick="sortTableByColumn(2)">Nama Pekerja</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7" onclick="sortTableByColumn(3)">Role</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bold opacity-7">Action</th>
                     </tr>
                   </thead>
@@ -263,8 +263,8 @@
                     </tr>
                     {% endfor %}
                   </tbody>
-                  
-                </table>           
+                </table>
+                
                 <div id="pagination" class="d-flex justify-content-center mt-3"></div>
                                    
               </div>
@@ -355,11 +355,10 @@
   <script>
     const rowsPerPage = 10;
     const table = document.getElementById("userTable");
-    const rows = table.querySelectorAll("tr");
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    let rows = Array.from(table.querySelectorAll("tr"));
     const pagination = document.getElementById("pagination");
-  
     let currentPage = 1;
+    let sortDirections = {}; // menyimpan status ascending/descending
   
     function showPage(page) {
       currentPage = page;
@@ -374,15 +373,16 @@
     }
   
     function renderPagination() {
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
       pagination.innerHTML = "";
-
+  
       const prevBtn = document.createElement("button");
       prevBtn.innerText = "Prev";
       prevBtn.className = "btn btn-secondary mx-1 btn-sm";
       prevBtn.disabled = currentPage === 1;
       prevBtn.onclick = () => showPage(currentPage - 1);
       pagination.appendChild(prevBtn);
-
+  
       for (let i = 1; i <= totalPages; i++) {
         const pageBtn = document.createElement("button");
         pageBtn.innerText = i;
@@ -390,7 +390,7 @@
         pageBtn.onclick = () => showPage(i);
         pagination.appendChild(pageBtn);
       }
-
+  
       const nextBtn = document.createElement("button");
       nextBtn.innerText = "Next";
       nextBtn.className = "btn btn-secondary mx-1 btn-sm";
@@ -398,7 +398,28 @@
       nextBtn.onclick = () => showPage(currentPage + 1);
       pagination.appendChild(nextBtn);
     }
-
+  
+    function sortTableByColumn(columnIndex) {
+      const isAscending = sortDirections[columnIndex] = !sortDirections[columnIndex];
+  
+      rows.sort((a, b) => {
+        const aText = a.children[columnIndex].textContent.trim();
+        const bText = b.children[columnIndex].textContent.trim();
+  
+        // Coba parse sebagai angka dulu, jika gagal urutkan sebagai string
+        const aNum = parseFloat(aText);
+        const bNum = parseFloat(bText);
+  
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return isAscending ? aNum - bNum : bNum - aNum;
+        } else {
+          return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+        }
+      });
+  
+      rows.forEach(row => table.appendChild(row));
+      showPage(1);
+    }
   
     // Inisialisasi tampilan
     showPage(1);
