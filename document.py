@@ -27,7 +27,6 @@ def home():
 def inputEvents():
     return render_template('inputEvents.html')
 
-# Route untuk submit data project
 @app.route('/submit-project', methods=['POST'])
 def submit_project():
     try:
@@ -56,7 +55,8 @@ def submit_project():
         mydb.commit()
         cursor.close()
 
-        flash("Data project berhasil disimpan!", "success")
+        # ✅ Flash hanya jika commit berhasil
+        flash("Data project berhasil ditambahkan!", "success")
         return redirect(url_for('inputEvents'))
 
     except Exception as e:

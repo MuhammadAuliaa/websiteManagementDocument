@@ -285,6 +285,24 @@
                     <a href="{{ url_for('dataUsers') }}" class="btn btn-secondary" onclick="confirmBack()">Back</a>
 
                 </form>  
+                <!-- Tambahkan ini di bawah <form> atau sebelum </body> -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <script>
+                      {% for category, message in messages %}
+                        Swal.fire({
+                          icon: '{{ "success" if category == "success" else "error" }}',
+                          title: '{{ message }}',
+                          showConfirmButton: false,
+                          timer: 2000
+                        });
+                      {% endfor %}
+                    </script>
+                  {% endif %}
+                {% endwith %}
+
               </div>
             </div>
           </div>
@@ -421,6 +439,17 @@
           });
         }
       </script>
+
+      <script>
+        function confirmRegister() {
+          return confirm('Apakah kamu yakin ingin mendaftarkan user ini?');
+        }
+
+        function confirmBack() {
+          return confirm('Apakah kamu yakin ingin kembali? Perubahan yang belum disimpan akan hilang.');
+        }
+      </script>
+
   
 </body>
 
