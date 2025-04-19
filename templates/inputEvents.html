@@ -121,14 +121,14 @@
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group">
+            <!-- <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
               <input type="text" class="form-control" placeholder="Type here...">
-            </div>
+            </div> -->
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Logout</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="#" onclick="confirmLogout()">Logout</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -235,56 +235,48 @@
                 <h6>Input Project</h6>
               </div>
               <div class="card-body pt-3 px-4">
-                <form action="{{ url_for('submit_project') }}" method="POST">
+                <form method="POST" action="{{ url_for('submit_project') }}">
                   <div class="mb-3">
-                    <label for="kode_project" class="form-label">Kode Project</label>
-                    <input type="text" name="kode_project" class="form-control" required>
+                      <label for="kode_project" class="form-label">Kode Project</label>
+                      <input type="text" name="kode_project" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="judul_project" class="form-label">Judul Project</label>
-                    <input type="text" name="judul_project" class="form-control" required>
+                      <label for="judul_project" class="form-label">Judul Project</label>
+                      <input type="text" name="judul_project" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="tanggal_event" class="form-label">Tanggal Event</label>
-                    <input type="date" name="tanggal_event" class="form-control" required>
+                      <label for="tanggal_event" class="form-label">Tanggal Event</label>
+                      <input type="date" name="tanggal_event" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="hari_kerja" class="form-label">Hari Kerja</label>
-                    <input type="text" name="hari_kerja" class="form-control" required>
+                      <label for="hari_kerja" class="form-label">Hari Kerja</label>
+                      <input type="text" name="hari_kerja" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="nama_venue" class="form-label">Nama Venue</label>
-                    <input type="text" name="nama_venue" class="form-control" required>
+                      <label for="nama_venue" class="form-label">Nama Venue</label>
+                      <input type="text" name="nama_venue" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan</label>
-                    <input type="text" name="jenis_pekerjaan" class="form-control" required>
+                      <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan</label>
+                      <input type="text" name="jenis_pekerjaan" class="form-control" required>
                   </div>
-      
+              
                   <div class="mb-3">
-                    <label for="keterangan" class="form-label">Keterangan</label>
-                    <textarea name="keterangan" class="form-control" rows="3" required></textarea>
+                      <label for="keterangan" class="form-label">Keterangan</label>
+                      <textarea name="keterangan" class="form-control" rows="3" required></textarea>
                   </div>
-      
-                  <div class="mb-4">
-                    <label for="approval_status" class="form-label">Approval Status</label>
-                    <select name="approval_status" class="form-select" required>
-                      <option value="approved">Approved</option>
-                      <option value="review">Review</option>
-                      <option value="rejected">Rejected</option>
-                    </select>
-                  </div>
-      
+              
                   <div class="d-flex justify-content-end">
-                    <!-- Submit biasa -->
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                      <!-- Submit biasa -->
+                      <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
-                </form>
+              </form>
+              
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -441,6 +433,13 @@
       </script>
       <!-- Bootstrap JS -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        function confirmLogout() {
+          if (confirm("Apakah Anda yakin ingin keluar?")) {
+            window.location.href = "{{ url_for('logout') }}"; // Jika user konfirmasi, arahkan ke halaman logout
+          }
+        }
+      </script>
   
 </body>
 

@@ -1,48 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <meta charset="utf-8">
+  <title>Login Neumorphism</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    html, body {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+    }
+    .content {
+      width: 330px;
+      padding: 40px 30px;
+      background: #fcfcfc;
+      border-radius: 10px;
+      box-shadow: -3px -3px 7px #ffffff73,
+                  2px 2px 5px rgba(94,104,121,0.288);
+    }
+    .content .text {
+      font-size: 33px;
+      font-weight: 600;
+      margin-bottom: 35px;
+      color: #595959;
+    }
+    .field {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .field input {
+      height: 100%;
+      width: 100%;
+      padding-left: 45px;
+      outline: none;
+      border: none;
+      font-size: 16px;
+      background: #dde1e7;
+      color: #595959;
+      border-radius: 25px;
+      box-shadow: inset 2px 2px 5px #BABECC,
+                  inset -5px -5px 10px #ffffff73;
+    }
+    .field span {
+      position: absolute;
+      color: #595959;
+      width: 50px;
+      text-align: center;
+    }
+    button {
+      width: 100%;
+      height: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      background: #dde1e7;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: #595959;
+      box-shadow: 2px 2px 5px #BABECC,
+                  -5px -5px 10px #ffffff73;
+    }
+    button:hover {
+      color: #3498db;
+    }
+    .flash-messages {
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: red;
+    }
+  </style>
 </head>
 <body>
-    <div class="center">
-        <div class="header">
-            Login Form
-        </div>
 
-        <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class="{{ category }}" style="color: red;">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+  <div class="content">
+    <div class="text">Login</div>
 
-        <form method="POST" action="{{ url_for('login') }}">
-            <input type="text" name="username" placeholder="Username" required>
-            <i class="far fa-envelope"></i>
-            <input id="pswrd" type="password" name="password" placeholder="Password" required>
-            <i class="fas fa-lock" onclick="show()"></i>
-            <input type="submit" value="Sign in">
-        </form>
+    <!-- Flash message -->
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div><strong>{{ category.title() }}:</strong> {{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
     </div>
 
-    <script>
-        function show() {
-            var pswrd = document.getElementById('pswrd');
-            var icon = document.querySelector('.fas');
-            if (pswrd.type === "password") {
-                pswrd.type = "text";
-                icon.style.color = "#7f2092";
-            } else {
-                pswrd.type = "password";
-                icon.style.color = "grey";
-            }
-        }
-    </script>
+    <!-- Login form -->
+    <form method="POST">
+      <div class="field">
+        <span class="fas fa-user"></span>
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+      <div class="field">
+        <span class="fas fa-lock"></span>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
 </body>
 </html>
