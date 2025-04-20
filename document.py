@@ -80,7 +80,26 @@ def home():
             pekerja = cursor.fetchone()
             row['user_by'] = pekerja['nama_pekerja'] if pekerja else 'Unknown'  # Menambahkan nama pekerja
 
-    return render_template('home.html', username=session['username'], project_data=data)
+    return render_template('home.html', username=session['username'], project_data=data)\
+    
+
+# ======================== DELETE EVENT ========================
+@app.route('/delete_project/<int:project_id>', methods=['POST'])
+@login_required
+def delete_project(project_id):
+    role = session.get('role')
+    user_id = session.get('user_id')
+
+    # Validasi hak akses
+    if role == 'Admin':
+        cursor.execute("DELETE FROM project_event WHERE id = %s", (project_id,))
+    else:
+        # User biasa hanya boleh hapus miliknya sendiri
+        cursor.execute("DELETE FROM project_event WHERE id = %s AND user_id = %s", (project_id, user_id))
+
+    mydb.commit()
+    # flash("Data berhasil dihapus.", "success")
+    return redirect(url_for('home'))
 
 
 # ======================== INPUT EVENT ========================
@@ -270,6 +289,56 @@ def download_project_data():
     # Return the XLSX file as a response
     return Response(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     headers={"Content-Disposition": "attachment;filename=project_data.xlsx"})
+
+@app.route('/edit_project/<kode_project>')
+@login_required
+def edit_event(kode_project):
+    cursor = mydb.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM project_event WHERE kode_project = %s", (kode_project,))
+    project = cursor.fetchone()
+
+    if not project:
+        flash("Project tidak ditemukan.", "danger")
+        return redirect(url_for('home'))
+
+    return render_template("editEvent.html", project=project)
+
+@app.route('/submit_project', methods=['POST'])
+@login_required
+def submit_event():
+    kode = request.form['kode_project']
+    judul = request.form['judul_project']
+    tanggal = request.form['tanggal_event']
+    hari = request.form['hari_kerja']
+    venue = request.form['nama_venue']
+    jenis = request.form['jenis_pekerjaan']
+    ket = request.form['keterangan']
+    approval_status = request.form['approval_status']
+    user_id = session['user_id']
+
+    cursor.execute("SELECT * FROM project_event WHERE kode_project = %s", (kode,))
+    existing = cursor.fetchone()
+
+    if existing:
+        # Update existing
+        cursor.execute("""
+            UPDATE project_event SET 
+            judul_project=%s, tanggal_event=%s, hari_kerja=%s,
+            nama_venue=%s, jenis_pekerjaan=%s, keterangan=%s, approval_status=%s
+            WHERE kode_project=%s
+        """, (judul, tanggal, hari, venue, jenis, ket, approval_status, kode))
+    else:
+        # Insert new
+        cursor.execute("""
+            INSERT INTO project_event (
+                kode_project, judul_project, tanggal_event, hari_kerja,
+                nama_venue, jenis_pekerjaan, keterangan, approval_status, user_id
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (kode, judul, tanggal, hari, venue, jenis, ket, approval_status, user_id))
+
+    mydb.commit()
+    return redirect(url_for('home'))
+
 
 # ======================== ERROR HANDLER ========================
 @app.errorhandler(404)
