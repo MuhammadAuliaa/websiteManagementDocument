@@ -77,6 +77,7 @@
             <span class="nav-link-text ms-1">Events</span>
           </a>
         </li>
+        {% if session['role'] == 'Super Admin' %}
         <li class="nav-item">
           <a class="nav-link  " href="{{ url_for('dataUsers') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -97,6 +98,7 @@
             <span class="nav-link-text ms-1">Data Users</span>
           </a>
         </li>
+        {% endif %}
        
       </ul>
     </div>
@@ -275,6 +277,7 @@
                             <option value="" disabled selected>Select Role</option>
                             <option value="Admin">Admin</option>
                             <option value="Staff">Staff</option>
+                            <option value="Super Admin">Super Admin</option>
                         </select>
                     </div>
 

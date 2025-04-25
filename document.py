@@ -18,7 +18,12 @@ mydb = mysql.connector.connect(
 )
 cursor = mydb.cursor(dictionary=True)
 
+
 # ======================== LOGIN SECTION ========================
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -66,7 +71,7 @@ def home():
     user_id = session['user_id']
     role = session.get('role')  # Ambil role dari session
 
-    if role == 'Admin':
+    if role in ['Admin', 'Super Admin']:
         cursor.execute("SELECT * FROM project_event")
     else:
         cursor.execute("SELECT * FROM project_event WHERE user_id = %s", (user_id,))
@@ -74,7 +79,7 @@ def home():
     data = cursor.fetchall()
 
     # Jika role Admin, ambil nama pekerja untuk setiap project
-    if role == 'Admin':
+    if role in ['Admin', 'Super Admin']:
         for row in data:
             cursor.execute("SELECT nama_pekerja FROM users WHERE id = %s", (row['user_id'],))
             pekerja = cursor.fetchone()
@@ -91,7 +96,7 @@ def delete_project(project_id):
     user_id = session.get('user_id')
 
     # Validasi hak akses
-    if role == 'Admin':
+    if role in ['Admin', 'Super Admin']:
         cursor.execute("DELETE FROM project_event WHERE id = %s", (project_id,))
     else:
         # User biasa hanya boleh hapus miliknya sendiri
@@ -249,7 +254,7 @@ def download_project_data():
     user_id = session['user_id']
     role = session.get('role')
 
-    if role == 'Admin':
+    if role in ['Admin', 'Super Admin']:
         cursor.execute("SELECT * FROM project_event")
     else:
         cursor.execute("SELECT * FROM project_event WHERE user_id = %s", (user_id,))
@@ -257,7 +262,7 @@ def download_project_data():
     data = cursor.fetchall()
 
     # If the role is Admin, fetch the 'user_by' field (i.e., nama_pekerja)
-    if role == 'Admin':
+    if role in ['Admin', 'Super Admin']:
         for row in data:
             cursor.execute("SELECT nama_pekerja FROM users WHERE id = %s", (row['user_id'],))
             pekerja = cursor.fetchone()
