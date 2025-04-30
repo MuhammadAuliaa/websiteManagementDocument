@@ -251,13 +251,14 @@
                       <th onclick="sortTable(3)">Hari Kerja</th>
                       <th onclick="sortTable(4)">Nama Venue</th>
                       <th onclick="sortTable(5)">Jenis Pekerjaan</th>
-                      <th onclick="sortTable(6)">Keterangan</th>
-                      <th onclick="sortTable(7)">Approval Status</th>
+                      <th onclick="sortTable(6)">Waktu Pekerjaan</th>
+                      <th onclick="sortTable(7)">Keterangan</th>
+                      <th onclick="sortTable(8)">Approval Status</th>
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
-                        <th onclick="sortTable(8)">User by</th>
+                        <th onclick="sortTable(9)">User by</th>
                       {% endif %}
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
-                        <th onclick="sortTable(8)">Action</th>
+                        <th onclick="sortTable(10)">Action</th>
                       {% endif %}
                     </tr>
                   </thead>
@@ -270,6 +271,7 @@
                       <td class="text-center text-sm">{{ row.hari_kerja }}</td>
                       <td class="text-start text-sm">{{ row.nama_venue }}</td>
                       <td class="text-start text-sm">{{ row.jenis_pekerjaan }}</td>
+                      <td class="text-start text-sm">{{ row.waktu_pekerjaan }}</td>
                       <td class="text-start text-sm text-truncate" style="max-width: 250px;" title="{{ row.keterangan }}">{{ row.keterangan }}</td>
                       <td class="text-center text-sm">
                         {% if row.approval_status|lower == 'approved' %}
