@@ -122,6 +122,7 @@ def submit_project():
         tanggal_event = request.form['tanggal_event']
         hari_kerja = request.form['hari_kerja']
         nama_venue = request.form['nama_venue']
+        lokasi_venue = request.form['lokasi_venue']
         jenis_pekerjaan = request.form['jenis_pekerjaan']
 
         # Get multiple selected values from checkboxes
@@ -135,12 +136,12 @@ def submit_project():
         query = """
             INSERT INTO project_event (
                 kode_project, judul_project, tanggal_event, hari_kerja,
-                nama_venue, jenis_pekerjaan, waktu_pekerjaan, keterangan, approval_status, user_id
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                nama_venue, lokasi_venue, jenis_pekerjaan, waktu_pekerjaan, keterangan, approval_status, user_id
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         values = (
             kode_project, judul_project, tanggal_event, hari_kerja,
-            nama_venue, jenis_pekerjaan, waktu_pekerjaan, keterangan, approval_status, user_id
+            nama_venue, lokasi_venue, jenis_pekerjaan, waktu_pekerjaan, keterangan, approval_status, user_id
         )
 
         cursor.execute(query, values)
@@ -274,7 +275,7 @@ def download_project_data():
             row['user_by'] = pekerja['nama_pekerja'] if pekerja else 'Unknown'  # Adding user_by
 
     # Create a DataFrame from the query result
-    columns = ['kode_project', 'judul_project', 'tanggal_event', 'hari_kerja', 'nama_venue', 'waktu_pekerjaan', 'keterangan', 'approval_status', 'user_by']
+    columns = ['kode_project', 'judul_project', 'tanggal_event', 'hari_kerja', 'nama_venue', 'jenis_pekerjaan', 'lokasi_venue', 'waktu_pekerjaan', 'keterangan', 'approval_status', 'user_by', 'created_at']
     df = pd.DataFrame(data, columns=columns)
 
     # Create an Excel workbook and write the data to it
@@ -321,6 +322,7 @@ def submit_event():
     tanggal = request.form['tanggal_event']
     hari = request.form['hari_kerja']
     venue = request.form['nama_venue']
+    lokasi = request.form['lokasi_venue']
 
     waktu_list = request.form.getlist('waktu_pekerjaan[]')  # list of checked values
     waktu = ', '.join(waktu_list) if waktu_list else ''     # for multi-checkbox
@@ -339,18 +341,18 @@ def submit_event():
         cursor.execute("""
             UPDATE project_event SET 
             judul_project=%s, tanggal_event=%s, hari_kerja=%s,
-            nama_venue=%s, waktu_pekerjaan=%s, jenis_pekerjaan=%s, 
+            nama_venue=%s, lokasi_venue=%s, waktu_pekerjaan=%s, jenis_pekerjaan=%s, 
             keterangan=%s, approval_status=%s
             WHERE kode_project=%s
-        """, (judul, tanggal, hari, venue, waktu, jenis, ket, approval_status, kode))
+        """, (judul, tanggal, hari, venue, lokasi, waktu, jenis, ket, approval_status, kode))
     else:
         # Insert new
         cursor.execute("""
             INSERT INTO project_event (
                 kode_project, judul_project, tanggal_event, hari_kerja,
-                nama_venue, waktu_pekerjaan, jenis_pekerjaan,
+                nama_venue, lokasi_venue, waktu_pekerjaan, jenis_pekerjaan,
                 keterangan, approval_status, user_id
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (kode, judul, tanggal, hari, venue, waktu, jenis, ket, approval_status, user_id))
 
     mydb.commit()

@@ -251,14 +251,16 @@
                       <th onclick="sortTable(3)">Hari Kerja</th>
                       <th onclick="sortTable(4)">Nama Venue</th>
                       <th onclick="sortTable(5)">Jenis Pekerjaan</th>
-                      <th onclick="sortTable(6)">Waktu Pekerjaan</th>
-                      <th onclick="sortTable(7)">Keterangan</th>
-                      <th onclick="sortTable(8)">Approval Status</th>
+                      <th onclick="sortTable(6)">Lokasi Venue</th>
+                      <th onclick="sortTable(7)">Waktu Pekerjaan</th>
+                      <th onclick="sortTable(8)">Keterangan</th>
+                      <th onclick="sortTable(9)">Approval Status</th>
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
-                        <th onclick="sortTable(9)">User by</th>
+                        <th onclick="sortTable(10)">User by</th>
                       {% endif %}
+                      <th onclick="sortTable(11)">Created At</th>
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
-                        <th onclick="sortTable(10)">Action</th>
+                        <th onclick="sortTable(12)">Action</th>
                       {% endif %}
                     </tr>
                   </thead>
@@ -271,6 +273,7 @@
                       <td class="text-center text-sm">{{ row.hari_kerja }}</td>
                       <td class="text-start text-sm">{{ row.nama_venue }}</td>
                       <td class="text-start text-sm">{{ row.jenis_pekerjaan }}</td>
+                      <td class="text-start text-sm">{{ row.lokasi_venue }}</td>
                       <td class="text-start text-sm">{{ row.waktu_pekerjaan }}</td>
                       <td class="text-start text-sm text-truncate" style="max-width: 250px;" title="{{ row.keterangan }}">{{ row.keterangan }}</td>
                       <td class="text-center text-sm">
@@ -285,6 +288,7 @@
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
                         <td class="text-center text-sm">{{ row.user_by }}</td>
                       {% endif %}
+                      <td class="text-start text-sm">{{ row.created_at }}</td>
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
                         <td>
                           <a href="{{ url_for('edit_event', kode_project=row.kode_project) }}" class="btn btn-sm btn-warning">Edit</a>

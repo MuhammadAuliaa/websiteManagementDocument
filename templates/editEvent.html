@@ -278,6 +278,11 @@
                         <option value="Driver" {{ 'selected' if project.jenis_pekerjaan == 'Driver' else '' }}>Driver</option>
                       </select>
                     </div>
+
+                    <div class="mb-3">
+                      <label for="lokasi_venue" class="form-label">Lokasi Venue</label>
+                      <input type="text" name="lokasi_venue" class="form-control" value="{{ project.lokasi_venue }}" required>
+                    </div>
                   
                     <div class="mb-3">
                       <label class="form-label">Waktu Pekerjaan :</label>
