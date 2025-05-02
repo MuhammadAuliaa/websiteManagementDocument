@@ -250,9 +250,9 @@
                       <th onclick="sortTable(2)">Tanggal Event</th>
                       <th onclick="sortTable(3)">Hari Kerja</th>
                       <th onclick="sortTable(4)">Nama Venue</th>
-                      <th onclick="sortTable(5)">Jenis Pekerjaan</th>
-                      <th onclick="sortTable(6)">Lokasi Venue</th>
-                      <th onclick="sortTable(7)">Waktu Pekerjaan</th>
+                      <th onclick="sortTable(5)">Lokasi Venue</th>
+                      <th onclick="sortTable(6)">Waktu Pekerjaan</th>
+                      <th onclick="sortTable(7)">Jenis Pekerjaan</th>
                       <th onclick="sortTable(8)">Keterangan</th>
                       <th onclick="sortTable(9)">Approval Status</th>
                       {% if session['role'] in ['Admin', 'Super Admin'] %}
@@ -272,9 +272,9 @@
                       <td class="text-center text-sm">{{ row.tanggal_event }}</td>
                       <td class="text-center text-sm">{{ row.hari_kerja }}</td>
                       <td class="text-start text-sm">{{ row.nama_venue }}</td>
-                      <td class="text-start text-sm">{{ row.jenis_pekerjaan }}</td>
                       <td class="text-start text-sm">{{ row.lokasi_venue }}</td>
                       <td class="text-start text-sm">{{ row.waktu_pekerjaan }}</td>
+                      <td class="text-start text-sm">{{ row.jenis_pekerjaan }}</td>
                       <td class="text-start text-sm text-truncate" style="max-width: 250px;" title="{{ row.keterangan }}">{{ row.keterangan }}</td>
                       <td class="text-center text-sm">
                         {% if row.approval_status|lower == 'approved' %}

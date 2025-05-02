@@ -275,7 +275,7 @@ def download_project_data():
             row['user_by'] = pekerja['nama_pekerja'] if pekerja else 'Unknown'  # Adding user_by
 
     # Create a DataFrame from the query result
-    columns = ['kode_project', 'judul_project', 'tanggal_event', 'hari_kerja', 'nama_venue', 'jenis_pekerjaan', 'lokasi_venue', 'waktu_pekerjaan', 'keterangan', 'approval_status', 'user_by', 'created_at']
+    columns = ['kode_project', 'judul_project', 'tanggal_event', 'hari_kerja', 'nama_venue', 'lokasi_venue', 'waktu_pekerjaan', 'jenis_pekerjaan', 'keterangan', 'approval_status', 'user_by', 'created_at']
     df = pd.DataFrame(data, columns=columns)
 
     # Create an Excel workbook and write the data to it

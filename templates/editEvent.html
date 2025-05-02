@@ -265,25 +265,10 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan :</label>
-                      <select name="jenis_pekerjaan" class="form-control" required>
-                        <option value="Project Officer" {{ 'selected' if project.jenis_pekerjaan == 'Project Officer' else '' }}>Project Officer</option>
-                        <option value="Project Manager" {{ 'selected' if project.jenis_pekerjaan == 'Project Manager' else '' }}>Project Manager</option>
-                        <option value="Hospitality" {{ 'selected' if project.jenis_pekerjaan == 'Hospitality' else '' }}>Hospitality</option>
-                        <option value="Logistik" {{ 'selected' if project.jenis_pekerjaan == 'Logistik' else '' }}>Logistik</option>
-                        <option value="Show Management" {{ 'selected' if project.jenis_pekerjaan == 'Show Management' else '' }}>Show Management</option>
-                        <option value="Produksi" {{ 'selected' if project.jenis_pekerjaan == 'Produksi' else '' }}>Produksi</option>
-                        <option value="Runner" {{ 'selected' if project.jenis_pekerjaan == 'Runner' else '' }}>Runner</option>
-                        <option value="Property" {{ 'selected' if project.jenis_pekerjaan == 'Property' else '' }}>Property</option>
-                        <option value="Driver" {{ 'selected' if project.jenis_pekerjaan == 'Driver' else '' }}>Driver</option>
-                      </select>
-                    </div>
-
-                    <div class="mb-3">
                       <label for="lokasi_venue" class="form-label">Lokasi Venue</label>
                       <input type="text" name="lokasi_venue" class="form-control" value="{{ project.lokasi_venue }}" required>
                     </div>
-                  
+
                     <div class="mb-3">
                       <label class="form-label">Waktu Pekerjaan :</label>
                       {% set selected = project.waktu_pekerjaan.split(', ') %}
@@ -308,7 +293,21 @@
                         <label class="form-check-label" for="pekerjaan4">After Event</label>
                       </div>
                     </div>
-                    
+
+                    <div class="mb-3">
+                      <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan :</label>
+                      <select name="jenis_pekerjaan" class="form-control" required>
+                        <option value="Project Officer" {{ 'selected' if project.jenis_pekerjaan == 'Project Officer' else '' }}>Project Officer</option>
+                        <option value="Project Manager" {{ 'selected' if project.jenis_pekerjaan == 'Project Manager' else '' }}>Project Manager</option>
+                        <option value="Hospitality" {{ 'selected' if project.jenis_pekerjaan == 'Hospitality' else '' }}>Hospitality</option>
+                        <option value="Logistik" {{ 'selected' if project.jenis_pekerjaan == 'Logistik' else '' }}>Logistik</option>
+                        <option value="Show Management" {{ 'selected' if project.jenis_pekerjaan == 'Show Management' else '' }}>Show Management</option>
+                        <option value="Produksi" {{ 'selected' if project.jenis_pekerjaan == 'Produksi' else '' }}>Produksi</option>
+                        <option value="Runner" {{ 'selected' if project.jenis_pekerjaan == 'Runner' else '' }}>Runner</option>
+                        <option value="Property" {{ 'selected' if project.jenis_pekerjaan == 'Property' else '' }}>Property</option>
+                        <option value="Driver" {{ 'selected' if project.jenis_pekerjaan == 'Driver' else '' }}>Driver</option>
+                      </select>
+                    </div>
                   
                     <div class="mb-3">
                       <label for="keterangan" class="form-label">Keterangan</label>

@@ -25,18 +25,19 @@ CREATE TABLE `project_event` (
   `tanggal_event` date DEFAULT NULL,
   `hari_kerja` varchar(50) DEFAULT NULL,
   `nama_venue` varchar(100) DEFAULT NULL,
+  `lokasi_venue` varchar(100) DEFAULT NULL,
   `jenis_pekerjaan` varchar(100) DEFAULT NULL,
   `waktu_pekerjaan` varchar(100) DEFAULT NULL,
   `keterangan` text,
   `approval_status` varchar(100) DEFAULT NULL,
   `action` varchar(100) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `kode_project` (`kode_project`),
   KEY `fk_user_event` (`user_id`),
   CONSTRAINT `fk_user_event` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 ## user : 50
 .com 
